@@ -36,8 +36,15 @@ fakenewsdetection/
 ## 🛠️ Prerequisites
 
 - **Python 3.9+**
-- **Local MongoDB** (or Atlas if available)
-- Python libraries: `requests`, `pandas`, `pymongo`, `sentence-transformers`, `fastapi`, `uvicorn`, `googletrans`
+- **Local MongoDB** (or MongoDB Atlas)
+- Python libraries:
+  - `requests`
+  - `pandas`
+  - `pymongo`
+  - `sentence-transformers`
+  - `fastapi`
+  - `uvicorn`
+  - `googletrans`
 - **Cron** (Linux/macOS) for automating the pipeline
 
 ---
@@ -64,14 +71,14 @@ news_collection = db["news"]
 embedding_collection = db["news_embedding"]
 📝 Automated Pipeline
 The full pipeline consists of several steps:
-1. Scraping
+Scraping
 Automatically extracts articles from http://api.elbotola.com/newsfeed/v3/
-Retrieves title, text, url, language, and date
+Retrieves title, text, URL, language, and date
 Temporarily stores articles in the news collection
-2. Translation
+Translation
 Automatically translates articles into French and English
-Stores translated versions linked via the same url
-3. Vectorization (Embeddings)
+Stores translated versions linked via the same URL
+Vectorization (Embeddings)
 Uses the model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 (384 dimensions)
 Generates an embedding for each article (title + text)
 Stores embeddings in news_embedding collection:
@@ -83,32 +90,33 @@ Stores embeddings in news_embedding collection:
   "created_at": "2025-12-22T23:44:49.882+00:00"
 }
 Total: ~3000 articles → 6002 embeddings (FR + EN)
-4. Automation via Cron
-Script pipeline.py runs daily to update news articles
+Automation via Cron
+pipeline.py runs daily to update news articles
 Cron command (macOS/Linux):
 crontab -e
 Add:
 0 2 * * * /usr/bin/python3 /Users/ilyassez/Documents/fakenewsdetection/backend/pipeline.py >> /Users/ilyassez/Documents/fakenewsdetection/logs/pipeline.log 2>&1
-Executes the pipeline automatically at 2 AM daily
+Executes the pipeline automatically at 2 AM daily.
 ▶️ Running the Web Application
 Backend (FastAPI)
 cd backend
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 The backend server will be accessible at: http://localhost:8000
 Frontend
+
 cd frontend
 python -m http.server 8080
 Open in browser: http://localhost:8080
 🔍 Vector Search / Cosine Similarity
-Every new article or text submitted is converted into an embedding
+Every new article or text submitted is converted into an embedding.
 Similarity with existing articles is calculated using cosine similarity:
 from numpy import dot
 from numpy.linalg import norm
 
 def cosine_similarity(a, b):
     return dot(a, b) / (norm(a) * norm(b))
-The most similar articles (highest scores) are returned with their URL and text
-Note: MongoDB Atlas $vectorSearch can be used if available, but here we use local MongoDB + Python cosine similarity
+The most similar articles (highest scores) are returned with their URL and text.
+Note: MongoDB Atlas $vectorSearch can be used if available, but here we use local MongoDB + Python cosine similarity.
 📡 API Endpoints
 POST /analyze
 Analyze a text to detect similarity with existing articles
