@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détection de Fausses Nouvelles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Détection de Fausses Nouvelles</h1>
+            <p class="subtitle">Analysez la véracité d'une information par similarité sémantique</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <label for="text-input">Entrez le texte à analyser :</label>
+                <textarea 
+                    id="text-input" 
+                    placeholder="Collez ou tapez ici le texte que vous souhaitez vérifier..."
+                    rows="6"
+                ></textarea>
+                <button id="analyze-btn" onclick="analyzeText()">
+                    <span id="btn-text">Analyser</span>
+                    <span id="btn-loader" class="loader" style="display: none;"></span>
+                </button>
+            </div>
+
+            <div id="result-section" class="result-section" style="display: none;">
+                <div class="result-card">
+                    <div class="verdict-header">
+                        <h2>Verdict</h2>
+                        <span id="verdict-badge" class="verdict-badge"></span>
+                    </div>
+                    <p id="verdict-text" class="verdict-text"></p>
+                    
+                    <div class="score-section">
+                        <label>Score de similarité :</label>
+                        <div class="score-container">
+                            <div class="score-bar">
+                                <div id="score-fill" class="score-fill"></div>
+                            </div>
+                            <span id="score-value" class="score-value"></span>
+                        </div>
+                    </div>
+
+                    <div class="article-section">
+                        <h3>Article le plus proche :</h3>
+                        <p id="closest-article" class="article-text"></p>
+                        <a id="source-url" href="#" target="_blank" class="source-link">
+                            Voir la source originale →
+                        </a>
+                    </div>
+
+                    <div class="language-info">
+                        <span>Langue détectée : <strong id="detected-language"></strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-section" class="error-section" style="display: none;">
+                <div class="error-card">
+                    <h3>❌ Erreur</h3>
+                    <p id="error-message"></p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by FastAPI + MongoDB Vector Search + Sentence Transformers</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
