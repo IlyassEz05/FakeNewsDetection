@@ -223,6 +223,10 @@ The web application allows:
 
 ---
 
+## 🎥 Demo Video
+A short demonstration video of the project is available at the following link:
+https://drive.google.com/file/d/1HCHqEBwnJZLu_9QHc9o8DQ0RZbSEu3kA/view?usp=drive_link
+
 ## 🔍 Technologies Used
 
 - **Scraping & Processing**: `requests`, `pandas`, `googletrans`
